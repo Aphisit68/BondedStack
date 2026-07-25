@@ -19,13 +19,14 @@ public class BoundedStack {
     //   AF(number) = ลำดับของคะแนนนักเรียนแต่ละคน
     
 
-    // TODO 2: เขียน Representation Invariant ตรงนี้ (6 ข้อ)
+    // TODO 2: เขียน Representation Invariant ตรงนี้ (7 ข้อ)
     // Representation Invariant:
     // นักเรียนไม่เป็น null
     // ไม่มีคะแนนเป็น null
     // ไม่มีคะแนนที่ว่าง
     // ไม่มีคะแนนติดลบ
     // คะแนนมีได้แค่ตัวเลข
+    // คะแนนไม่เกิน 20 คะแนน
     // มีได้ไม่เกิน max_number (50) คน
 
     // TODO 3: เขียน Safety from rep exposure ตรงนี้
