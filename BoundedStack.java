@@ -13,7 +13,6 @@ import java.util.List;
 
 public class BoundedStack {
      private final List<String> number;
-     private final int score;
      public static final int max_number = 50;
 
     //===== representation =====
@@ -36,7 +35,7 @@ public class BoundedStack {
     // Safety from rep exposure:
     //  มีการ copy object ทั้งตอนสร้างและส่งคะแนนนักเรียน
 
-    /**
+     /**
      * TODO 4: เขียน checkRep()
      * แปลง RI ทุกข้อเป็น assert หนึ่งบรรทัด พร้อมข้อความอธิบาย
      */
@@ -50,30 +49,36 @@ public class BoundedStack {
                int val = Integer.parseInt(s);
                assert val >= 0 : "คะแนนต้องไม่ติดลบ: " + s;
                assert val <= 20 : "คะแนนต้องไม่เกิน 20: " + s;
-          } 
+          }
      
-    
+
 }
 
  // ===== Creator =====
 
-    /**
+/**
      * สร้างคะแนนนักเรียน
      */
-    public BoundedStack(){
+public BoundedStack(){
      this.number = new ArrayList<>();
      checkRep();
     } //เขียนแบบอาจารย์แต่มันแดง
-    
-   
+
+
 /**
  * TODO 5: Creator ตัวที่สอง
- * 
+ *
  * สร้างจำนวนของคะแนนนักเรียน
  * @param initial จำนวนนักเรียน ต้องไม่เกิน max_number
  * @throws IllegalArgumentException ถ้า initial ผิดเงื่อนไข
  */
-
+public BoundedStack(int initial) {
+     if (initial < 0 || initial > max_number) {
+     throw new IllegalArgumentException("initial ต้องอยู่ระหว่าง 0 ถึง " + max_number + " แต่ได้ " + initial);
+     }
+     this.number = new ArrayList<>(initial);
+     checkRep();
+}
 
 
 
@@ -87,7 +92,19 @@ public class BoundedStack {
  * @return true ถ้าเพิ่มสำเร็จ, false ถ้ามีจำนวนนักเรียนเต็มแล้ว
  * @throws IllegalArgumentException ถ้า score เป็น null หรือสตริงว่าง
  */
-
+public boolean add(String score) {
+     if (score == null || score.isEmpty()) {throw new IllegalArgumentException("score ต้องไม่เป็น null หรือสตริงว่าง");
+     }
+     if (!score.matches("\\d+")) {throw new IllegalArgumentException("score ต้องประกอบด้วยตัวเลขเท่านั้น: " + score);
+     }
+     if (Integer.parseInt(score) > 20) {throw new IllegalArgumentException("score ต้องไม่เกิน 20: " + score);
+     }
+     if (number.size() >= max_number) {return false;
+     }
+     number.add(score);
+     checkRep();
+     return true;
+}
 
 /**
  * TODO 7: ลบคะแนนออกจากลำดับนักเรียน
@@ -95,23 +112,49 @@ public class BoundedStack {
  * @param score ลำดับคะแนนที่ต้องการลบ
  * @return true ถ้าลบสำเร็จ, false ถ้าไม่พบลำดับคะแนนนี้
  */
+public boolean remove(int index) {
+     if (index < 0 || index >= number.size()) {
+          return false;
+     }
+     number.remove(index);
+     checkRep();
+     return true;
+}
 
 // ===== Observers =====
 
 /**
  * TODO 8: คืนคะแนนในลำดับนักเรียน
+ * 
+ * @param index ตำแหน่งที่ต้องการ (0-indexed)
+ * @return คะแนน ที่ ตำแหน่งนั้น
+ * @throws IndexOutOfBoundsException ถ้า index ไม่ถูกต้อง
  */
+public String get(int index) {
+     return number.get(index);
+}
+ 
 
 
 /**
  * TODO 9: ตรวจว่ามีคะแนนนี้อยู่หรือไม่
+ *
+ * ตรวจว่ามีคะแนนนี้อยู่ในลำดับนักเรียนหรือไม่
+ *
+ * @param score คะแนนที่ต้องการตรวจสอบ
+ * @return true ถ้ามีคะแนนนี้อยู่อย่างน้อยหนึ่งตำแหน่ง
  */
+public boolean contains(String score) {
+     return number.contains(score);
+}
 
 
 /**
  * TODO 10: คืนคะแนนทั้งหมดตามลำดับ
  */
-
+public List<String> getAll() {
+     return new ArrayList<>(number);
+ }
 
 // ===== Producer =====
 
@@ -120,4 +163,14 @@ public class BoundedStack {
  *
  * @return คะแนนลำดับใหม่ที่เรียงเลขแล้ว
  */
+public BoundedStack sortedDescending() {
+     List<String> copy = new ArrayList<>(number);
+     copy.sort((a, b) -> Integer.parseInt(b) - Integer.parseInt(a));
+     BoundedStack result = new BoundedStack(copy.size());
+     for (String s : copy) {
+         result.add(s);
+     }
+     return result;
+ }
+}
 
