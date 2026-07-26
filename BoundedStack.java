@@ -11,7 +11,9 @@ import java.util.*;
  */
 
 public class BoundedStack {
-    public static final int max_number = 50;
+     private final List<String> number;
+     private final int score;
+     public static final int max_number = 50;
 
     //===== representation =====
     // TODO 1: เขียน Abstraction Function 
@@ -46,6 +48,10 @@ public class BoundedStack {
     /**
      * สร้างคะแนนนักเรียน
      */
+    public BoundedStack(int score){
+     this.number = new ArrayList<>();
+     this.score = score;
+    } //เขียนแบบอาจารย์แต่มันแดง
     
    
 /**
@@ -55,6 +61,7 @@ public class BoundedStack {
  * @param initial จำนวนนักเรียน ต้องไม่เกิน max_number
  * @throws IllegalArgumentException ถ้า initial ผิดเงื่อนไข
  */
+
 
 
 
@@ -72,7 +79,7 @@ public class BoundedStack {
 /**
  * TODO 7: ลบคะแนนออกจากลำดับนักเรียน
  *
- * @param song ลำดับคะแนนที่ต้องการลบ
+ * @param score ลำดับคะแนนที่ต้องการลบ
  * @return true ถ้าลบสำเร็จ, false ถ้าไม่พบลำดับคะแนนนี้
  */
 
