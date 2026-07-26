@@ -17,6 +17,7 @@ public class BoundedStack {
 
     //===== representation =====
     // TODO 1: เขียน Abstraction Function 
+    // (พวก TODO ค่อยไปลบเอานะ แต่ต้องเขียนพวก representation,... ไม่ต้องลบ ) 
     // Abstraction Function:
     //   AF(number) = ลำดับของคะแนนนักเรียนแต่ละคน
     
@@ -31,17 +32,12 @@ public class BoundedStack {
     // คะแนนไม่เกิน 20 คะแนน
     // มีได้ไม่เกิน max_number (50) คน
 
-    // TODO 3: เขียน Safety from rep exposure ตรงนี้
-    // Safety from rep exposure:
-    //  มีการ copy object ทั้งตอนสร้างและส่งคะแนนนักเรียน
+    private void checkRep() {
+        assert number != null : "number is not null";
+        assert number.size() <= max_number;
+        }
 
-    /**
-     * TODO 4: เขียน checkRep()
-     * แปลง RI ทุกข้อเป็น assert หนึ่งบรรทัด พร้อมข้อความอธิบาย
-     */
 
-    
-}
 
  // ===== Creator =====
 
@@ -51,7 +47,9 @@ public class BoundedStack {
     public BoundedStack(int score){
      this.number = new ArrayList<>();
      this.score = score;
-    } //เขียนแบบอาจารย์แต่มันแดง
+     checkRep();
+    }
+} 
     
    
 /**

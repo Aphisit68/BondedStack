@@ -22,8 +22,6 @@ public static void main(String[] args) {
         + " - re-run with: java -ea test\n");
     }
     System.out.println("=== NUMBER Test Suite ===\n");
-
-
         System.out.println("\n=== Summary ===");
         System.out.println("Passed: " + passed);
         System.out.println("Failed: " + failed);
