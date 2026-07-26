@@ -1,13 +1,14 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * BoundedStack - ADT แทนคะแนนนักเรียนที่อาจารย์จัดลำดับไว้
  * form พลอยกาญจน์ และ ...
  * คำนามธรรม (A) : ลำดับของคะแนนนักเรียน เช่น [18, 9, 15]
- * 
+ *
  * ตัวอย่างการใช้งาน
  * BoundedStack s = new BoundedStack();
  * s.add("20");
- * System.out.println(s.size());  
+ * System.out.println(s.size());
  */
 
 public class BoundedStack {
@@ -16,11 +17,10 @@ public class BoundedStack {
      public static final int max_number = 50;
 
     //===== representation =====
-    // TODO 1: เขียน Abstraction Function 
-    // (พวก TODO ค่อยไปลบเอานะ แต่ต้องเขียนพวก representation,... ไม่ต้องลบ ) 
+    // TODO 1: เขียน Abstraction Function
     // Abstraction Function:
     //   AF(number) = ลำดับของคะแนนนักเรียนแต่ละคน
-    
+    //
 
     // TODO 2: เขียน Representation Invariant ตรงนี้ (7 ข้อ)
     // Representation Invariant:
@@ -32,24 +32,38 @@ public class BoundedStack {
     // คะแนนไม่เกิน 20 คะแนน
     // มีได้ไม่เกิน max_number (50) คน
 
-    private void checkRep() {
-        assert number != null : "number is not null";
-        assert number.size() <= max_number;
-        }
+    // TODO 3: เขียน Safety from rep exposure ตรงนี้
+    // Safety from rep exposure:
+    //  มีการ copy object ทั้งตอนสร้างและส่งคะแนนนักเรียน
 
-
+    /**
+     * TODO 4: เขียน checkRep()
+     * แปลง RI ทุกข้อเป็น assert หนึ่งบรรทัด พร้อมข้อความอธิบาย
+     */
+     private  void  checkRep(){
+          assert  number != null : "number ต้องไม่เป็น null";
+          assert number.size() <= max_number : "จำนวนคะแนนต้องไม่เกิน max_number";
+          for (String s : number) {
+               assert s != null : "คะแนนต้องไม่เป็น null";
+               assert !s.isEmpty() : "คะแนนต้องไม่เป็นสตริงว่าง";
+               assert s.matches("\\d+") : "คะแนนต้องประกอบด้วยตัวเลขเท่านั้น: " + s;
+               int val = Integer.parseInt(s);
+               assert val >= 0 : "คะแนนต้องไม่ติดลบ: " + s;
+               assert val <= 20 : "คะแนนต้องไม่เกิน 20: " + s;
+          } 
+     
+    
+}
 
  // ===== Creator =====
 
     /**
      * สร้างคะแนนนักเรียน
      */
-    public BoundedStack(int score){
+    public BoundedStack(){
      this.number = new ArrayList<>();
-     this.score = score;
      checkRep();
-    }
-} 
+    } //เขียนแบบอาจารย์แต่มันแดง
     
    
 /**
@@ -59,6 +73,7 @@ public class BoundedStack {
  * @param initial จำนวนนักเรียน ต้องไม่เกิน max_number
  * @throws IllegalArgumentException ถ้า initial ผิดเงื่อนไข
  */
+
 
 
 
