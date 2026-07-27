@@ -4,11 +4,6 @@ import java.util.List;
  * BoundedStack - ADT แทนคะแนนนักเรียนที่อาจารย์จัดลำดับไว้
  * form พลอยกาญจน์ และ ...
  * คำนามธรรม (A) : ลำดับของคะแนนนักเรียน เช่น [18, 9, 15]
- *
- * ตัวอย่างการใช้งาน
- * BoundedStack s = new BoundedStack();
- * s.add("20");
- * System.out.println(s.size());
  */
 
 public class BoundedStack {
@@ -16,13 +11,10 @@ public class BoundedStack {
      public static final int max_number = 50;
 
     //===== representation =====
-    // TODO 1: เขียน Abstraction Function
-    // Abstraction Function:
+    // Abstraction Function(AF):
     //   AF(number) = ลำดับของคะแนนนักเรียนแต่ละคน
-    //
 
-    // TODO 2: เขียน Representation Invariant ตรงนี้ (7 ข้อ)
-    // Representation Invariant:
+    // Representation Invariant(RI):
     // นักเรียนไม่เป็น null
     // ไม่มีคะแนนเป็น null
     // ไม่มีคะแนนที่ว่าง
@@ -31,14 +23,6 @@ public class BoundedStack {
     // คะแนนไม่เกิน 20 คะแนน
     // มีได้ไม่เกิน max_number (50) คน
 
-    // TODO 3: เขียน Safety from rep exposure ตรงนี้
-    // Safety from rep exposure:
-    //  มีการ copy object ทั้งตอนสร้างและส่งคะแนนนักเรียน
-
-     /**
-     * TODO 4: เขียน checkRep()
-     * แปลง RI ทุกข้อเป็น assert หนึ่งบรรทัด พร้อมข้อความอธิบาย
-     */
      private  void  checkRep(){
           assert  number != null : "number ต้องไม่เป็น null";
           assert number.size() <= max_number : "จำนวนคะแนนต้องไม่เกิน max_number";
@@ -50,8 +34,6 @@ public class BoundedStack {
                assert val >= 0 : "คะแนนต้องไม่ติดลบ: " + s;
                assert val <= 20 : "คะแนนต้องไม่เกิน 20: " + s;
           }
-     
-
 }
 
  // ===== Creator =====
@@ -62,12 +44,9 @@ public class BoundedStack {
 public BoundedStack(){
      this.number = new ArrayList<>();
      checkRep();
-    } //เขียนแบบอาจารย์แต่มันแดง
-
+    } 
 
 /**
- * TODO 5: Creator ตัวที่สอง
- *
  * สร้างจำนวนของคะแนนนักเรียน
  * @param initial จำนวนนักเรียน ต้องไม่เกิน max_number
  * @throws IllegalArgumentException ถ้า initial ผิดเงื่อนไข
@@ -80,15 +59,11 @@ public BoundedStack(int initial) {
      checkRep();
 }
 
-
-
-
  // ===== Mutators =====
 
 /**
- * TODO 6: เพิ่มคะแนนต่อท้ายนักเรียน
- *
- * @param score คะแนน ต้องไม่เป็น null และไม่มีคะแนนว่าง
+ * เพิ่มคะแนนต่อท้ายนักเรียน
+ * @param score คะแนน ต้องไม่เป็น null, ไม่มีคะแนนว่าง, คะแนนต้องเป็นตัวเลข, คะแนนไม่เกิน 20 คะแนน
  * @return true ถ้าเพิ่มสำเร็จ, false ถ้ามีจำนวนนักเรียนเต็มแล้ว
  * @throws IllegalArgumentException ถ้า score เป็น null หรือสตริงว่าง
  */
@@ -107,10 +82,9 @@ public boolean add(String score) {
 }
 
 /**
- * TODO 7: ลบคะแนนออกจากลำดับนักเรียน
- *
- * @param score ลำดับคะแนนที่ต้องการลบ
- * @return true ถ้าลบสำเร็จ, false ถ้าไม่พบลำดับคะแนนนี้
+ * ลบคะแนนออกจากลำดับนักเรียน
+ * @param index ตำแหน่งคะแนนที่ต้องการลบ
+ * @return true ถ้าลบสำเร็จ, false ถ้าไม่พบตำแหน่งคะแนนนี้
  */
 public boolean remove(int index) {
      if (index < 0 || index >= number.size()) {
@@ -124,8 +98,7 @@ public boolean remove(int index) {
 // ===== Observers =====
 
 /**
- * TODO 8: คืนคะแนนในลำดับนักเรียน
- * 
+ * คืนคะแนนในลำดับนักเรียน
  * @param index ตำแหน่งที่ต้องการ (0-indexed)
  * @return คะแนน ที่ ตำแหน่งนั้น
  * @throws IndexOutOfBoundsException ถ้า index ไม่ถูกต้อง
@@ -133,14 +106,9 @@ public boolean remove(int index) {
 public String get(int index) {
      return number.get(index);
 }
- 
-
 
 /**
- * TODO 9: ตรวจว่ามีคะแนนนี้อยู่หรือไม่
- *
  * ตรวจว่ามีคะแนนนี้อยู่ในลำดับนักเรียนหรือไม่
- *
  * @param score คะแนนที่ต้องการตรวจสอบ
  * @return true ถ้ามีคะแนนนี้อยู่อย่างน้อยหนึ่งตำแหน่ง
  */
@@ -150,7 +118,7 @@ public boolean contains(String score) {
 
 
 /**
- * TODO 10: คืนคะแนนทั้งหมดตามลำดับ
+ * คืนคะแนนทั้งหมดตามลำดับ
  */
 public List<String> getAll() {
      return new ArrayList<>(number);
@@ -159,8 +127,7 @@ public List<String> getAll() {
 // ===== Producer =====
 
 /**
- * TODO 11: คืนลำดับคะแนนใหม่ที่มีคะแนนเดียวกันแต่เรียงเลขจากมากไปน้อย
- *
+ * คืนลำดับคะแนนใหม่ที่มีคะแนนเดียวกันแต่เรียงเลขจากมากไปน้อย
  * @return คะแนนลำดับใหม่ที่เรียงเลขแล้ว
  */
 public BoundedStack sortedDescending() {
@@ -173,4 +140,3 @@ public BoundedStack sortedDescending() {
      return result;
  }
 }
-
