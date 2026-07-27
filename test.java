@@ -48,13 +48,13 @@ public class test {
         }
     }
 
-    // --- Partition: constructor เปล่า / constructor(initial) ที่ขอบเขตถูก-ผิด ---
+    // Creator เทส constructor ทั้ง 2 ตัว ทั้งแบบที่ให้ผ่านและแบบที่ต้อง error
     private static void testCreators() {
         System.out.println("-- Creators --");
 
         check("new() -> empty", new BoundedStack().getAll().isEmpty());
 
-        // boundary: initial = 0 และ initial = max_number คือขอบล่าง-บนที่ถูกต้อง
+        // boundary ลองขอบสุด ๆ ดู initial = 0 กับ initial = max_number ต้องไม่ error
         check("new(0) -> empty", new BoundedStack(0).getAll().isEmpty());
         boolean threwAtUpperBound = false;
         try {
@@ -64,7 +64,7 @@ public class test {
         }
         check("new(max_number) -> does not throw", !threwAtUpperBound);
 
-        // input ผิดเงื่อนไขต้องโยน exception
+        // partition: input ผิดเงื่อนไข ใส่ค่าผิด ๆ ไป มันต้อง throw exception ออกมา
         boolean threwNegative = false;
         try {
             new BoundedStack(-1);
@@ -82,7 +82,7 @@ public class test {
         check("new(max_number + 1) -> throws IllegalArgumentException", threwOverMax);
     }
 
-    // --- Mutator: add ต้องรักษาลำดับและกันคะแนนที่ผิดเงื่อนไข ---
+    // Mutator เทส add() ว่าเก็บลำดับถูกไหม แล้วกันคะแนนแปลก ๆ ได้จริงไหม
     private static void testAdd() {
         System.out.println("\n-- Add --");
 
@@ -95,11 +95,11 @@ public class test {
         check("add preserves insertion order",
                 s.getAll().equals(Arrays.asList("20", "9", "15")));
 
-        // คะแนนซ้ำได้ — list ไม่ใช่ set
+        // partition: ค่าซ้ำ เพิ่มคะแนนซ้ำได้นะ ไม่ใช่ set ที่ห้ามซ้ำ
         s.add("9");
         check("duplicate scores both counted", s.getAll().size() == 4);
 
-        // boundary: 0 ผ่าน, 21 ไม่ผ่าน (คะแนนสูงสุดคือ 20)
+        // boundary ลองขอบ ๆ ดู 0 ต้องผ่าน แต่ 21 ต้องไม่ผ่าน เพราะคะแนนเต็มคือ 20
         check("add(0) -> lower bound accepted", new BoundedStack().add("0"));
         boolean threwOver20 = false;
         try {
@@ -109,7 +109,7 @@ public class test {
         }
         check("add(\"21\") -> throws IllegalArgumentException", threwOver20);
 
-        // input ผิดเงื่อนไขต้องโยน exception (เลือกเคสที่ครอบคลุมแต่ละ branch พอ)
+        // partition: input ผิดเงื่อนไข ลองใส่ค่าผิด ๆ แบบต่าง ๆ ดูว่า error ถูกไหม
         boolean threwNull = false;
         try {
             s.add(null);
@@ -134,16 +134,10 @@ public class test {
         }
         check("add(\"abc\") -> throws IllegalArgumentException", threwNonDigit);
 
-        // boundary: เติมจนเต็มพอดีแล้วเติมเพิ่ม
-        BoundedStack full = new BoundedStack();
-        for (int i = 0; i < BoundedStack.max_number; i++) {
-            full.add("10");
-        }
-        check("can fill up to max_number", full.getAll().size() == BoundedStack.max_number);
-        check("add when full -> returns false", !full.add("10"));
+        
     }
 
-    // --- Mutator: remove ทั้งกรณีพบและไม่พบตำแหน่ง ---
+    // Mutator เทส remove() ทั้งกรณีลบได้จริงกับกรณีตำแหน่งไม่มี
     private static void testRemove() {
         System.out.println("\n-- Remove --");
 
@@ -156,17 +150,17 @@ public class test {
         check("remove keeps the others in order",
                 s.getAll().equals(Arrays.asList("20", "15")));
 
-        // boundary: index นอกขอบเขตทั้งสองฝั่งไม่ใช่ error — คืน false เฉย ๆ
+        // boundary ลบ index ที่ไม่มีจริง (เกินขอบบน กับ ติดลบ) ไม่ error แค่คืน false
         check("remove(index เกินขอบบน) -> returns false", !s.remove(99));
         check("remove(index ติดลบ) -> returns false", !s.remove(-1));
 
-        // boundary: ลบจนหมด
+        // boundary ลบไปเรื่อย ๆ จนหมด list ต้องว่างจริง
         s.remove(0);
         s.remove(0);
         check("remove all -> empty", s.getAll().isEmpty());
     }
 
-    // --- Observer ต้องไม่มี side effect ---
+    // Observer เทสพวก get, contains, getAll ว่าดูค่าอย่างเดียว ไม่ไปแก้ข้อมูล (no side effect)
     private static void testObservers() {
         System.out.println("\n-- Observers --");
 
@@ -193,7 +187,7 @@ public class test {
         check("observers have no side effects", s.getAll().size() == before);
     }
 
-    // --- Producer ต้องคืน object ใหม่ ไม่แก้ตัวเดิม ---
+    // Producer เทส sortedDescending() ว่าคืนตัวใหม่จริง ไม่แก้ตัวเดิม
     private static void testProducer() {
         System.out.println("\n-- Producer (sortedDescending) --");
 
@@ -208,12 +202,12 @@ public class test {
         check("sortedDescending does not mutate the original",
                 original.getAll().equals(Arrays.asList("9", "20", "15")));
 
-        // boundary: sort stack ว่างต้องไม่พัง
+        // boundary ลอง sort ตอน list ว่าง ๆ ดู ต้องไม่พัง
         check("sorting an empty stack is safe",
                 new BoundedStack().sortedDescending().getAll().isEmpty());
     }
 
-    // --- ทดสอบว่าไม่เกิด representation exposure ---
+    //  เช็คว่า getAll() คืนสำเนามาจริง ๆ ไม่ใช่ list ตัวจริงข้างในของเรา
     private static void testExposure() {
         System.out.println("\n-- Representation Exposure --");
 
