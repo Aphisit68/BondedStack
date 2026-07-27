@@ -139,4 +139,19 @@ public BoundedStack sortedDescending() {
      }
      return result;
  }
+
+public int size() {
+     // TODO Auto-generated method stub
+     throw new UnsupportedOperationException("Unimplemented method 'size'");
+}
+
+public Object score() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'score'");
+}
+
+public Object number() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'number'");
+}
 }
